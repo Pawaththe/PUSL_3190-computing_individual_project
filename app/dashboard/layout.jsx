@@ -1,7 +1,11 @@
+import Header from "./_components/header"
 
 function DashboardLayout ({children}) {
   return (
     <div>
+
+      <Header />  
+
       {children}
     </div>
   )
