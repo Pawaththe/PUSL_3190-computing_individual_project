@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { chatSession } from "@/utils/GeminiAIModel";
+import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 
 function AddNewInterview() {
@@ -17,10 +19,21 @@ function AddNewInterview() {
     const [jobPosition, setjobPosition] = useState();
     const [jobDesc, setjobDesc] = useState();
     const [jobExperience, setjobExperience] = useState();
+    const [loading,setloading] = useState(false);
+    const [jsonResponse, setjsonResponse] = useState([]);
 
-    const onSubmit = (e) => {
+    const onSubmit = async(e) => {
+        setloading(true)
         e.preventDefault();
         console.log(jobPosition, jobDesc, jobExperience);
+
+        const InputPrompt = "Job Position: "+jobPosition+", Job Description: "+jobDesc+", Years of Experience: "+jobExperience+" Depends on Job Position., Job Description and Years of Experience provide "+process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT+" interview questions along with answers in JSON format. Provide questions and answers field on JSON."
+        
+        const result = await chatSession.sendMessage(InputPrompt);
+        const MockJsonResp = (result.response.text()).replace('```json','').replace('```','');
+        console.log(JSON.parse(MockJsonResp));
+        setjsonResponse(MockJsonResp);
+        setloading(false);
     }
 
   return (
@@ -65,7 +78,14 @@ function AddNewInterview() {
                     
                     <div className='flex gap-5 justify-end'>
                         <Button type="button" variant="ghost" onClick={()=>setopenDialog(false)}>Cancel</Button>
-                        <Button type="submit">Start Interview</Button>
+                        <Button type="submit" disabled={loading}>
+                            {
+                                loading?
+                                <>
+                                <LoaderCircle className='animate-spin'/> 'Generating from AI'
+                                </>:'Start Interview'
+                            }
+                            </Button>
                     </div>
 
                 </form>
