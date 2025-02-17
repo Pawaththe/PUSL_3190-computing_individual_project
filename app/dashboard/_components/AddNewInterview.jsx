@@ -9,9 +9,15 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { db } from "@/utils/db";
 import { chatSession } from "@/utils/GeminiAIModel";
+import { MockInterview } from "@/utils/schema";
+import { useUser } from "@clerk/nextjs";
 import { LoaderCircle } from "lucide-react";
+import moment from "moment";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 function AddNewInterview() {
 
@@ -21,6 +27,8 @@ function AddNewInterview() {
     const [jobExperience, setjobExperience] = useState();
     const [loading,setloading] = useState(false);
     const [jsonResponse, setjsonResponse] = useState([]);
+    const {user} = useUser();
+    const router = useRouter();
 
     const onSubmit = async(e) => {
         setloading(true)
@@ -33,6 +41,29 @@ function AddNewInterview() {
         const MockJsonResp = (result.response.text()).replace('```json','').replace('```','');
         console.log(JSON.parse(MockJsonResp));
         setjsonResponse(MockJsonResp);
+
+        if(MockJsonResp){
+
+            const resp = await db.insert(MockInterview).values({
+                mockId:uuidv4(),
+                jsonMockResp:MockJsonResp,
+                jobPostion:jobPosition,
+                jobDesc:jobDesc,
+                jobExperience:jobExperience,
+                createdBy:user?.primaryEmailAddress?.emailAddress,
+                createdAt:moment().format('DD-MM-yyyy')
+            }).returning({mockId:MockInterview.mockId});
+
+            console.log("Inserted ID: ",resp)
+            if(resp){
+                setopenDialog(false);
+                router.push('/dashboard/interview/'+resp[0]?.mockId)
+            }
+        }
+        else{
+            console.log("Error");
+        }
+
         setloading(false);
     }
 
