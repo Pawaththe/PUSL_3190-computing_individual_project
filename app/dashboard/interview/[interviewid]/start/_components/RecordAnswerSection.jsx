@@ -26,13 +26,14 @@ function RecordAnswerSection({mockInterviewQuestion,activeQuestionIndex,intervie
         results,
         startSpeechToText,
         stopSpeechToText,
+        setResults
       } = useSpeechToText({
         continuous: true,
         useLegacyResults: false
     });
 
     useEffect(() => {
-        results.map((result)=>(
+        results?.map((result)=>(
             setuserAnswer(prevAns=>prevAns+result?.transcript)
         ))
 
@@ -87,8 +88,12 @@ function RecordAnswerSection({mockInterviewQuestion,activeQuestionIndex,intervie
                 }) 
 
             if(resp){
-                toast('User answer recorded successfully')
+                toast('User answer recorded successfully');
+                setuserAnswer('');
+                setResults([]);
             }
+            setResults([]);
+
             setLoading(false);
     }
 
@@ -122,8 +127,6 @@ function RecordAnswerSection({mockInterviewQuestion,activeQuestionIndex,intervie
             <h2 className='text-primary flex gap-2 items-center'><Mic/> Record Answer </h2>}
             
             </Button>
-
-            <Button onClick = {()=>console.log(userAnswer)}>Show User Answer</Button>
 
     </div>
     
