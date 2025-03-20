@@ -70,13 +70,13 @@ function AddNewInterview() {
   return (
     <div>
         <div className='p-10 border rounded-lg bg-secondary hover:scale-105 hover:shadow-md cursor-pointer transition-all' onClick={()=>setopenDialog(true)}>
-            <h2 className='font-bold text-lg text-center'>+ Add New</h2>
+            <h2 className='font-bold text-lg text-center'>Create New Mock Interview</h2>
         </div>
 
         <Dialog open={openDialog}>
         <DialogContent className='max-w-2xl'>
             <DialogHeader>
-            <DialogTitle className= 'text-2xl'>Tell us more about job you are interviewing</DialogTitle>
+            <DialogTitle className= 'text-2xl'>Please share details about your upcoming interview role.</DialogTitle>
             <DialogDescription>
 
                 <form onSubmit={onSubmit}>
@@ -92,8 +92,8 @@ function AddNewInterview() {
                         </div>
 
                         <div className='my-3'>
-                            <label>Job Description / Tech Stack(In Short)</label>
-                            <Textarea placeholder="Ex. React, Angular, NodeJS, Java" required
+                            <label>Job Description / Tech Stack</label>
+                            <Textarea placeholder="Ex. React, NodeJS, Java, Python etc" required
                             onChange = {(event)=>setjobDesc(event.target.value)}
                             />
                         </div>
@@ -113,7 +113,7 @@ function AddNewInterview() {
                             {
                                 loading?
                                 <>
-                                <LoaderCircle className='animate-spin'/> 'Generating from AI'
+                                <LoaderCircle className='animate-spin'/> Generating from AI
                                 </>:'Start Interview'
                             }
                             </Button>

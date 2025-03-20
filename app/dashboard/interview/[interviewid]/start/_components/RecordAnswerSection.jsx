@@ -114,7 +114,7 @@ function RecordAnswerSection({mockInterviewQuestion,activeQuestionIndex,intervie
 
         <Button
         disabled={loading}
-        variant = "outline" className= "my-10"
+        variant = "outline" className= "my-10 bg-secondary hover:bg-slate-300"
         
             onClick={StartStopRecording}
         >
