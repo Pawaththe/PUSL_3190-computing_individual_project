@@ -1,10 +1,22 @@
-import Header from "../dashboard/_components/Header"
+'use client'
+
+import { useState } from "react";
+import { UserInputContext } from "../_context/UserInputContext";
+import Header from "../dashboard/_components/Header";
 
 function CreateCourseLayout({children}) {
+
+  const [userCourseInput, setuserCourseInput] = useState([]);
+
   return (
     <div>
-      <Header/>  
-      {children}
+      <UserInputContext.Provider value={{userCourseInput, setuserCourseInput}}>
+        <>
+        <Header/>  
+        {children}
+        </>
+        
+      </UserInputContext.Provider>
     </div>
   )
 }
