@@ -16,7 +16,7 @@ function Hero() {
             <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <a
                 className="block w-full rounded-sm bg-primary px-12 py-3 text-sm font-medium text-white shadow-sm hover:bg-black focus:ring-3 focus:outline-hidden sm:w-auto"
-                href="#"
+                href="/dashboard"
                 >
                 Get Started
                 </a>
