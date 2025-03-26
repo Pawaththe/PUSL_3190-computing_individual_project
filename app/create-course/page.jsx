@@ -2,8 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { GenerateCourseLayout_AI } from "@/configs/AiModel";
+import { db } from "@/utils/db";
+import { CourseList } from "@/utils/schema";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { HiMiniSquare3Stack3D, HiPencilSquare, HiSquaresPlus } from "react-icons/hi2";
+import uuid4 from "uuid4";
 import { UserInputContext } from "../_context/UserInputContext";
 import LoadingDialog from "./_components/LoadingDialog";
 import SelectCategory from "./_components/SelectCategory";
@@ -35,6 +40,10 @@ function CreateCourse() {
     const [loading,setloading] = useState(false);
     
     const [activeIndex,setactiveIndex] = useState(0);
+
+    const {user} = useUser();
+
+    const router = useRouter();
 
     useEffect(()=>{
         console.log(userCourseInput);
@@ -72,7 +81,26 @@ function CreateCourse() {
         console.log(result.response?.text());
         console.log(JSON.parse(result.response?.text()))
         setloading(false);
+        SaveCourseLayoutInDb(JSON.parse(result.response?.text()));
+    }
 
+    const SaveCourseLayoutInDb = async(courseLayout)=>{
+        var id = uuid4();
+        setloading(true)
+        const result = await db.insert(CourseList).values({
+            courseId:id,
+            name:userCourseInput?.topic,
+            level:userCourseInput?.level,
+            category:userCourseInput?.category,
+            courseOutput:courseLayout,
+            createdBy:user?.primaryEmailAddress.emailAddress,
+            userName:user?.fullName,
+            userProfileImage:user?.imageUrl
+        })
+
+        console.log("finish")
+        setloading(false);
+        router.replace('/create-course/' + id)
     }
 
 
