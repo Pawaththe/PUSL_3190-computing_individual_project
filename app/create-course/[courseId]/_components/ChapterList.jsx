@@ -2,7 +2,7 @@ import { HiOutlineCheckCircle, HiOutlineClock } from "react-icons/hi";
 
 function ChapterList({course}) {
   return (
-    <div className='mt-3'>
+    <div className='mt-10'>
         <h2 className='font-bold text-xl'>Chapters</h2>
         <div className='mt-2'>
             {course?.courseOutput?.Chapters.map((chapter,index)=>(
