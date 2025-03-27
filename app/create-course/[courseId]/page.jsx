@@ -5,6 +5,7 @@ import { CourseList } from "@/utils/schema"
 import { useUser } from "@clerk/nextjs"
 import { and, eq } from "drizzle-orm"
 import { useEffect, useState } from "react"
+import ChapterList from "./_components/ChapterList"
 import CourseBasicInfo from "./_components/CourseBasicInfo"
 import CourseDetails from "./_components/CourseDetails"
 
@@ -37,6 +38,7 @@ function CourseLayout({params}) {
         <CourseDetails course={course}/>
 
         {/* List of Lessons */}
+        <ChapterList course={course}/>
 
     </div>
   )
