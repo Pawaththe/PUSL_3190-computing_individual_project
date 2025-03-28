@@ -2,10 +2,12 @@
 
 import { Button } from "@/components/ui/button"
 import { GenerateChapterContent_AI } from "@/configs/AiModel"
+import service from "@/configs/service"
 import { db } from "@/utils/db"
-import { CourseList } from "@/utils/schema"
+import { Chapters, CourseList } from "@/utils/schema"
 import { useUser } from "@clerk/nextjs"
 import { and, eq } from "drizzle-orm"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import LoadingDialog from "../_components/LoadingDialog"
 import ChapterList from "./_components/ChapterList"
@@ -17,6 +19,7 @@ function CourseLayout({params}) {
     const {user} = useUser();
     const [course,setcourse] = useState([]);
     const [loading,setLoading] = useState(false);
+    const router = useRouter();
 
     useEffect(()=>{
         params && GetCourse();
@@ -39,17 +42,31 @@ function CourseLayout({params}) {
 
         const PROMPT = 'Explain the concept in detail on Topic:'+course?.name+' , Chapter: '+chapter?.['Chapter Name']+', in JSON format with list of array with field as title, explanation on give chapter in detail, Code examples (Code field in <precode> format) if applicable.';
         console.log(PROMPT);
-        if(index == 0){
+        if(index<3){
 
           try{
 
+            let videoId= '';
+
+             //Generate Video URL
+              service.getVideos(course?.name+':'+chapter?.['Chapter Name']).then(resp=>{
+              console.log(resp);
+              videoId = resp[0]?.id?.videoId;
+          })
+
+            //Generate Chapter Content
             const result = await GenerateChapterContent_AI.sendMessage(PROMPT)
             console.log(result?.response?.text());
-
-            //Generate Video URL
-
+            const content = JSON.parse(result?.response?.text());
 
             //Save Chapter Content + Video URL
+            await db.insert(Chapters).values({
+              chapterId:index,
+              courseId:course?.courseId,
+              content:content,
+              videoId:videoId
+            })
+
             setLoading(false);
 
           }catch(e){
@@ -57,6 +74,8 @@ function CourseLayout({params}) {
             setLoading(false);
             console.log(e);
           }
+
+          router.replace('/create-course/'+course?.courseId+'/finish')
         }
     })
   }
