@@ -1,4 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { storage } from "@/configs/firebaseConfig";
+import { db } from "@/utils/db";
+import { CourseList } from "@/utils/schema";
+import { eq } from "drizzle-orm";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Image from "next/image";
 import { useState } from "react";
 import { HiOutlinePuzzle } from "react-icons/hi";
@@ -42,7 +47,10 @@ function CourseBasicInfo({course,refreshData}) {
                 <Button className='w-full mt-5'>Start</Button>
             </div>
             <div>
-                <Image src={'/online.png'} width={300} height={300} className='w-full rounded-xl h-[250px] object-contain bg-blue-100'/>
+              <label htmlFor='upload-image'>
+                  <Image src={selectedFile?selectedFile:'/online.png'} width={300} height={300} className='w-full rounded-xl h-[250px] object-contain bg-blue-100 cursor-pointer'/>
+              </label>
+                <input type='file' id="upload-image" className='opacity-0' onChange={onFileSelected}/>
             </div>
         </div>
     </div>
