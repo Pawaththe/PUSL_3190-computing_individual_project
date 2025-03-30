@@ -42,7 +42,7 @@ function CourseLayout({params}) {
 
         const PROMPT = 'Explain the concept in detail on Topic:'+course?.name+' , Chapter: '+chapter?.['Chapter Name']+', in JSON format with list of array with field as title, explanation on give chapter in detail, Code examples (Code field in <precode> format) if applicable.';
         console.log(PROMPT);
-        if(index<3){
+        // if(index<3){
 
           try{
 
@@ -76,7 +76,7 @@ function CourseLayout({params}) {
           }
 
           router.replace('/create-course/'+course?.courseId+'/finish')
-        }
+        // }
     })
   }
 
