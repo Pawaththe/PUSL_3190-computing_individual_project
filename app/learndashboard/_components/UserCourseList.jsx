@@ -28,9 +28,16 @@ function UserCourseList() {
       <h2 className='font-bold text-xl'>My AI Courses</h2>
 
       <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5'>
-        {courseList?.map((course,index)=>(
+        {courseList?.length>0?courseList?.map((course,index)=>(
             <CourseCard course={course} key={index} refreshData={()=>getUserCourses()}/>
-        ))}
+        ))
+      :
+        [1,2,3,4,5].map((item,index) => (
+          <div key={index} className='w-full mt-5 bg-slate-200 animate-pulse rounded-lg h-[250px]'>
+          </div>  
+        ))
+
+      }
       </div>
 
     </div>
