@@ -1,15 +1,35 @@
+import { db } from '@/utils/db';
+import { CourseList } from '@/utils/schema';
+import { eq } from 'drizzle-orm';
 import Image from 'next/image';
-import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
+import { HiEllipsisVertical, HiOutlineClipboardDocumentList } from "react-icons/hi2";
+import DropdownOption from './DropdownOption';
 
 
-function CourseCard({course}) {
+
+function CourseCard({course,refreshData}) {
+
+    const handleOnDelete = async() =>{
+        const resp = await db.delete(CourseList).where(eq(CourseList.id,course?.id))
+        .returning({id:CourseList?.id})
+
+    if(resp){
+      refreshData();
+    }
+  }  
+
   return (
     <div className='shadow-sm rounded-lg border p-2 hover:scale-105 transition-all cursor-pointer mt-4'>
         <Image src={course?.courseBanner} width={300} height={200}
         className='w-full h-[200px] object-cover rounded-lg'/>
 
         <div className='p-2'>
-            <h2 className='font-medium text-lg'>{course?.courseOutput?.['Course Name']}</h2>
+            <h2 className='font-medium text-lg flex justify-between items-center'>{course?.courseOutput?.['Course Name']}
+              
+              <DropdownOption
+                handleOnDelete={() => handleOnDelete()}
+              > <HiEllipsisVertical /> </DropdownOption>
+            </h2>
 
             <p className='text-sm text-gray-400 my-1'>{course?.category}</p>
 
