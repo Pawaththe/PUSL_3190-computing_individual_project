@@ -8,7 +8,7 @@ import DropdownOption from './DropdownOption';
 
 
 
-function CourseCard({course,refreshData}) {
+function CourseCard({course,refreshData,displayUser=false}) {
 
     const handleOnDelete = async() =>{
         const resp = await db.delete(CourseList).where(eq(CourseList.id,course?.id))
@@ -39,6 +39,15 @@ function CourseCard({course,refreshData}) {
                 <h2 className='flex gap-2 items-center p-1 bg-blue-50 text-primary text-sm rounded-sm'><HiOutlineClipboardDocumentList /> {course?.courseOutput?.['Number of Chapters']} Chapters</h2>
                 <h2 className='text-sm bg-blue-50 text-primary p-1 rounded-sm'>{course?.level }</h2>
             </div>
+
+            <div className='flex gap-2 items-center mt-2'>
+              <Image src={course.userProfileImage} width={35} height={35}
+              className='rounded-full'
+              />
+
+              <h2 className='text-sm'>{course?.userName}</h2>
+            </div>
+
         </div>
 
     </div>
