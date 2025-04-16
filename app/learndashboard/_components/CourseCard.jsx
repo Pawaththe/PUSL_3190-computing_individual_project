@@ -28,9 +28,9 @@ function CourseCard({course,refreshData,displayUser=false}) {
         <div className='p-2'>
             <h2 className='font-medium text-lg flex justify-between items-center'>{course?.courseOutput?.['Course Name']}
               
-              <DropdownOption
+              {!displayUser && <DropdownOption
                 handleOnDelete={() => handleOnDelete()}
-              > <HiEllipsisVertical /> </DropdownOption>
+              > <HiEllipsisVertical /> </DropdownOption>}
             </h2>
 
             <p className='text-sm text-gray-400 my-1'>{course?.category}</p>
@@ -40,13 +40,13 @@ function CourseCard({course,refreshData,displayUser=false}) {
                 <h2 className='text-sm bg-blue-50 text-primary p-1 rounded-sm'>{course?.level }</h2>
             </div>
 
-            <div className='flex gap-2 items-center mt-2'>
+            {displayUser && <div className='flex gap-2 items-center mt-2'>
               <Image src={course.userProfileImage} width={35} height={35}
               className='rounded-full'
               />
 
               <h2 className='text-sm'>{course?.userName}</h2>
-            </div>
+            </div>}
 
         </div>
 
