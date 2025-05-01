@@ -25,12 +25,12 @@ function CreateCourse() {
         },
         {
             id:2,
-            name:'Options',
+            name:'Topic & Desc',
             icon:<HiSquaresPlus />
         },
         {
             id:3,
-            name:'Topic & Desc',
+            name:'Options',
             icon:<HiPencilSquare />
         },
     ]
