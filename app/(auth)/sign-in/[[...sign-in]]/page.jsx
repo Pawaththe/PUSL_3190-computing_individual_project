@@ -34,7 +34,7 @@ export default function Page() {
             </h2>
 
             <p className="mt-4 leading-relaxed text-white/90">
-            AI Powered Mock Interview and Personalized Learning Platform.
+            GenAI Powered Mock Interview and Personalized Learning Platform.
             </p>
         </div>
         </section>
@@ -67,7 +67,7 @@ export default function Page() {
             </h1>
 
             <p className="mt-4 leading-relaxed text-gray-500">
-                AI Powered Mock Interview and Personalized Learning Platform.
+                GenAI Powered Mock Interview and Personalized Learning Platform.
             </p>
             </div>
 
