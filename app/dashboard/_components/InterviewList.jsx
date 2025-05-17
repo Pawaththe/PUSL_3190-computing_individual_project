@@ -36,7 +36,7 @@ function InterviewList() {
         {interviewList && interviewList.map((interview,index) =>(
             <InterviewItemCard
             interview={interview}
-            key={index} />
+            key={index} refreshData={()=> GetInterviewList()} />
         ))}
 
       </div>

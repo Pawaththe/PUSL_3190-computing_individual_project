@@ -1,7 +1,12 @@
+import DropdownOption from "@/app/learndashboard/_components/DropdownOption";
 import { Button } from "@/components/ui/button";
+import { db } from "@/utils/db";
+import { MockInterview } from "@/utils/schema";
+import { eq } from "drizzle-orm";
 import { useRouter } from "next/navigation";
+import { HiEllipsisVertical } from "react-icons/hi2";
 
-function InterviewItemCard({interview}) {
+function InterviewItemCard({interview,refreshData,displayUser=false}) {
 
     const router = useRouter();
 
@@ -13,10 +18,27 @@ function InterviewItemCard({interview}) {
         router.push('/dashboard/interview/'+interview.mockId+'/feedback')
     }
 
+    const handleOnDelete = async() => {
+        const resp = await db.delete(MockInterview)
+        .where(eq(MockInterview.mockId,interview?.mockId))
+        .returning({id:MockInterview?.mockId})
+
+        if(resp){
+            refreshData();
+        }
+        
+    }
+
   return (
     <div className='border shadow-sm rounded-lg p-3'>
 
-        <h2 className='font-bold text-primary'>{interview?.jobPostion}</h2>
+        <h2 className='font-bold text-primary flex justify-between items-center'>{interview?.jobPostion}
+        {!displayUser && (
+            <DropdownOption handleOnDelete={() => handleOnDelete()}>
+            <HiEllipsisVertical />
+            </DropdownOption>
+        )}
+        </h2>
         <h2 className='text-sm text-gray-800'>{interview?.jobExperience} Years of Experience</h2>
         <h2 className='text-xs text-gray-600'>Created at: {interview.createdAt}</h2>
 
